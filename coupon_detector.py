@@ -89,7 +89,7 @@ def test_check_coupon():
     ]
 
     for coupon_code in test_cases:
-        print coupon_code, test_coupon(coupon_code)
+        print coupon_code, check_coupon(coupon_code)
 
 
 # Main program ================================================================
@@ -100,11 +100,28 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         "coupon",
+        nargs="?",
+        default=False,
         help="Code of the coupon."
     )
-
+    parser.add_argument(
+        "-t",
+        "--test",
+        action="store_true",
+        help="Run tests."
+    )
     args = parser.parse_args()
 
+    # run tests?
+    if args.test:
+        test_check_coupon()
+        sys.exit()
+
+    if not args.coupon:
+        sys.stderr.write("You have to specify `coupon`!\n")
+        sys.exit(1)
+
+    # otherwise run check for coupon from args
     result = check_coupon(args.coupon)
 
     print result
